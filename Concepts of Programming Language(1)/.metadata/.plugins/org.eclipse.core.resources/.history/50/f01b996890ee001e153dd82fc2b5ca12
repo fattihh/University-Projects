@@ -1,0 +1,15 @@
+package pdp_odev;
+
+public class java_properties {
+	
+	public java_properties(String url)
+	{
+		this.url = url;
+	}
+	
+	
+	
+	
+	
+
+}

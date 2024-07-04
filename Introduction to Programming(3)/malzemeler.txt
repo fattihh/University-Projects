@@ -1,0 +1,21 @@
+yayla corbasi,yogurt,un,tuz,yumurta
+mercimek corbasi,mercimek,salca,yag,tuz
+ezogelin corbasi,mercimek,bulgur,tuz,salca
+domates corbasi,domates,salca,tuz,baharat
+tarhana corbasi,tarhana,salca
+sehriye corbasi,sehriye,salca,tuz
+cokertme kebabi,kiyma,patates,salca,yogurt,tuz
+kofte,kiyma,bulgur,maydanoz,ekmek
+kuru fasulye,kuru fasulye,salca,tuz
+tavuk sote,tavuk,salca,tuz,biber
+nohut,nohut,salca,tuz
+sinitzel,tavuk,yag
+pilav,pirinc,yag,tuz,su
+makarna,makarna,su
+bulgur pilavi,bulgur,domates,patates,biber
+ıspanak tarator,ıspanak,yogurt
+tavuk gogsu,seker,krem santi,kabartma tozu
+sutlac,pirinc,sut,seker
+trilece,hamur,sut,seker
+baklava,yufka,seker,su,ceviz
+tulumba,hamur,seker,yag

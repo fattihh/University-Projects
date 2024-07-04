@@ -1,0 +1,87 @@
+package github_repo_analyzer;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class github_repo_analyzer_example {
+
+    public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Lütfen klonlamak istediğiniz GitHub reposunun URL'sini girin:");
+        String repoUrl = scanner.nextLine();
+
+        String baseDir = System.getProperty("user.dir");
+        String repoName = extractRepoName(repoUrl); // Repoyu URL'den ayıkla
+        String uniqueDirName = generateUniqueDirectoryName(baseDir, repoName); // Benzersiz klasör ismi oluştur veya varolanı bul
+
+        String path = Paths.get(baseDir, uniqueDirName).toString();
+
+        cleanOrCreateDirectory(path);
+
+        GithubRepoAnalyzer github = new GithubRepoAnalyzer(repoUrl, path);
+
+        github.cloneRepository();
+
+        List<Path> javaFiles = github.findClassPathsInJavaFiles(path);
+
+        github.analyzeJavaFiles(javaFiles);
+
+        scanner.close();
+    }
+
+    public static void cleanOrCreateDirectory(String directoryPath) throws IOException {
+        Path path = Paths.get(directoryPath);
+        if (Files.exists(path)) {
+            Files.walk(path)
+                .sorted(Comparator.reverseOrder())
+                .map(Path::toFile)
+                .forEach(File::delete);
+        }
+        Files.createDirectories(path);
+    }
+
+    public static String extractRepoName(String repoUrl) {
+        Pattern pattern = Pattern.compile(".*/([^/]+)(\\.git)?$");
+        Matcher matcher = pattern.matcher(repoUrl);
+        if (matcher.find()) {
+            return matcher.group(1); // `.git` uzantısı olup olmadığını kontrol etmeden doğrudan repo adını döndür
+        }
+        return "unknown_repo"; // Eşleşme bulunamazsa
+    }
+    public static String generateUniqueDirectoryName(String baseDir, String repoName) {
+        File dir = new File(baseDir);
+        File[] files = dir.listFiles();
+        int maxIndex = -1;
+        for (File file : files) {
+            if (file.getName().startsWith(repoName)) {
+                Pattern pattern = Pattern.compile(Pattern.quote(repoName) + "\\((\\d+)\\)");
+                Matcher matcher = pattern.matcher(file.getName());
+                if (matcher.find()) {
+                    int index = Integer.parseInt(matcher.group(1));
+                    if (index > maxIndex) {
+                        maxIndex = index;
+                    }
+                } else if (file.getName().equals(repoName)) {
+                    maxIndex = 0; // Eğer tam isim eşleşmesi varsa, bu 0 indexli olarak kabul edilir
+                }
+            }
+        }
+        // Eğer depo daha önce indirilmemişse, orijinal ismi kullan
+        if (maxIndex == -1) {
+            return repoName;
+        } else {
+            // Depo daha önce indirilmişse, sayısal bir ek ekleyerek benzersiz bir isim oluştur
+            return repoName + "(" + (maxIndex + 1) + ")";
+        }
+    }
+}
+

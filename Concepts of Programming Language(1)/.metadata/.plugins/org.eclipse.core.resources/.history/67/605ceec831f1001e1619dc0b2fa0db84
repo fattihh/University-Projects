@@ -1,0 +1,43 @@
+package github_repo_analyzer;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Scanner;
+
+
+public class github_repo_analyzer_example {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		
+		Scanner scanner = new Scanner(System.in);
+        
+        // Kullanıcıdan GitHub repository URL'si iste
+        System.out.println("Lütfen klonlamak istediğiniz GitHub reposunun URL'sini girin:");
+        String repoUrl = scanner.nextLine();
+        
+        // Klonlanacak repository için hedef yol
+        String path = "C:\\Users\\Fatih\\Desktop\\kopya";
+        
+        // GithubRepoAnalyzer nesnesini oluştur
+        GithubRepoAnalyzer github = new GithubRepoAnalyzer(repoUrl, path);
+        
+        // Repository'i klonla
+        github.cloneRepository();
+        
+        // Java dosyalarını bul
+        List<Path> javaFiles = github.findClassPathsInJavaFiles(path);
+        
+        // Java dosyalarını analiz et
+        github.analyzeJavaFiles(javaFiles);
+        
+        scanner.close();
+		
+		
+		
+	
+		
+	}
+
+}

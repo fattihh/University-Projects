@@ -1,0 +1,10 @@
+package github_repo_analyzer;
+
+public class github_repo_analyzer_example {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
